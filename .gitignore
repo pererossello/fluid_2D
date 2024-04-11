@@ -4,5 +4,7 @@ figures/
 main/bin/
 main/bin_newer/
 main/gravity/
-rmain/results/
+main/results/
 z_report/
+main/__pycache__/
+results/

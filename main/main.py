@@ -63,7 +63,7 @@ class Fluid2D:
         # Default with no tracers
         self.are_there_tracers = False
 
-    def evaluate(self, T: float32, snapshot_times=None):
+    def evaluate(self, T: float32, snapshot_times=None, prints=True):
 
         if self.output_folder is None:
             print("No output_folder path provided. Exiting...")
@@ -88,7 +88,8 @@ class Fluid2D:
             if self.time >= snapshot_times[self.snapshot_step]:
                 self.save_snapshot()
                 self.snapshot_step += 1
-                print(f"t: {self.time:0.2f}", end="\r")
+                if prints:
+                    print(f"t: {self.time:0.2f}", end="\r")
 
             # Precompute for further use
             self.UU_VV = self.U**2 + self.V**2
@@ -107,7 +108,8 @@ class Fluid2D:
 
         clock_end = time.time()
 
-        print(f"Compute time: {clock_end - clock_start:0.2e} s")
+        if prints:
+            print(f"Compute time: {clock_end - clock_start:0.2e} s")
 
         # Save last frame
         self.save_snapshot()
@@ -249,8 +251,13 @@ class Fluid2D:
             step_group.create_dataset("Specific Energy", data=E, dtype=np.float32)
             step_group.attrs["Time"] = self.time
 
-            step_group.create_dataset("Tracer X", data=self.x_tracer, dtype=np.float32)
-            step_group.create_dataset("Tracer Y", data=self.y_tracer, dtype=np.float32)
+            if self.are_there_tracers:
+                step_group.create_dataset(
+                    "Tracer X", data=self.x_tracer, dtype=np.float32
+                )
+                step_group.create_dataset(
+                    "Tracer Y", data=self.y_tracer, dtype=np.float32
+                )
 
             if self.snapshot_step == len(self.snapshot_times) - 1:
                 header_grp = f["Header"]
@@ -282,7 +289,7 @@ def update_field(
     one_over_dy: float32,
 ) -> NDArray[float32]:
     """
-    Update the field using the 2D generalization of the Lax-Friedrichs scheme
+    Update the field using the 2D generalization of the Lax-Friedrichs scheme and periodic boundary conditions
     """
 
     PHI_i_plus_1 = np.roll(PHI, shift=-1, axis=1)

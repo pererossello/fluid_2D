@@ -133,6 +133,19 @@ def animate_field(
 
             step_group = file[f"{i:03d}"]
 
+            time = step_group.attrs["Time"]
+
+            time_text = ax.text(
+                0.02,
+                0.98,
+                f"t={time:0.2f}",
+                ha="left",
+                va="top",
+                transform=ax.transAxes,
+                fontsize=fs * ts * 0.8,
+                color="k",
+            )
+
             x_tracer = np.array(step_group["Tracer X"])
             y_tracer = np.array(step_group["Tracer Y"])
             field = (
@@ -149,7 +162,7 @@ def animate_field(
                     orientation="vertical",
                     pad=0.02 * fs,
                     aspect=20,
-                    shrink=0.815,
+                    shrink=0.79,
                 )
                 Fig.customize_axes(cbar.ax, ylabel_pos="right")
                 # cbar.ax.tick_params(labelsize=fs*ts)
@@ -164,19 +177,24 @@ def animate_field(
             Fig.save(image_path, bbox_inches="tight")
 
             plt.close()
+
+            time_text.remove()
             for im in ims:
                 im.remove()
 
             if are_there_tracers:
                 s.remove()
 
-            print(f"Saved frame {i+1}/{n_plots}", end="\r")
+            print(f"Saving frames {i+1}/{n_plots}", end="\r")
 
     print("\n")
 
     save_folder = output_folder + "frames/"
     video_name = field_name.replace(" ", "_") + "_animation"
     frames_to_mp4(save_folder, fps=fps, title=video_name, extension=".jpg")
+
+    # Delete frames
+    shutil.rmtree(save_folder)
 
 
 class Figure:
