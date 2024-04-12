@@ -8,3 +8,4 @@ main/results/
 z_report/
 main/__pycache__/
 results/
+example/extra.py

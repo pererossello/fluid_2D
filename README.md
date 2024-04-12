@@ -11,11 +11,15 @@ Python program for 2D implementation of Lax-Friederichs scheme for simulation of
 - `example/`
     - `gresho_vortex_example.py`: Example simulation of the Gresho Vortex. 
     - `waves_example.py`: Example simulation of propagating waves.
-    - `analysis.ipynb`: Notebook that outputs the figuees used in the assingment. 
+    - `analysis_vortex.ipynb`: Notebook that outputs figures related to the Gresho vortex. 
+    - `analysis_wave.ipynb`: Notebook that outputs figures related to the propagating waves. 
 - `example_videos/`: Two example videos for the Gresho vortex and propagating wave simulations
 
+## Usage
+
+The core functionality relies in the `Fluid2D()` class inside `main/main.py`, which implements the Lax-Friederichs scheme in 2D for the fluid flow equations.  The simulation output is saved in a `.hdf5` file format. There is also the possibility to add lagrangian tracers to the simulation. See files in `example/gresho_vortex_example.py` for example usage.  
+
 ## Dependencies
-This project requires the following Python packages:
 - [numpy](https://github.com/numpy/numpy): For math operations.
 - [matplotlib](https://github.com/matplotlib/matplotlib): For plotting.
 - [h5py](https://github.com/h5py/h5py): For saving simulation output data.

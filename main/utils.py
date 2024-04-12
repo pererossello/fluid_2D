@@ -125,6 +125,65 @@ class WaveIcs:
         self.P = P0 + AP * np.cos(k_x * self.X + k_y * self.Y + phi)
 
 
+class ExplosionIcs:
+
+    def __init__(
+        self,
+        N,
+        lim,
+        gamma=1.4,
+        inner_radius=0.2,
+        outer_radius=0.3,
+        high_pressure=50,
+        low_pressure=1,
+    ):
+        # N should be integer or size 2 tuple of integers
+        if isinstance(N, int):
+            N = (N, N)
+        elif isinstance(N, tuple) and len(N) == 2:
+            N = tuple(int(n) for n in N)
+        else:
+            raise ValueError("N should be integer or size 2 tuple of integers")
+
+        # if lim is a number, it is used as the domain limits in both directions, -lim and lim,
+        # otherwise, it should be a tuple of two tuples of two numbers
+        if isinstance(lim, (int, float)):
+            lim = ((-lim, lim), (-lim, lim))
+        elif isinstance(lim, tuple) and len(lim) == 2:
+            lim = tuple(tuple(float(l) for l in lim) for lim in lim)
+        else:
+            raise ValueError(
+                "lim should be a number or a tuple of two tuples of two numbers"
+            )
+
+        self.x = np.linspace(lim[0][0], lim[0][1], N[0])
+        self.y = np.linspace(lim[1][0], lim[1][1], N[1])
+
+        X, Y = np.meshgrid(self.x, self.y)
+        R = np.sqrt(X**2 + Y**2)
+
+        # Initialize fields
+        self.D = np.ones_like(R, dtype=np.float32)  # Uniform density
+        self.U = np.zeros_like(R, dtype=np.float32)  # No initial radial velocity
+        self.V = np.zeros_like(R, dtype=np.float32)  # No initial tangential velocity
+
+        # Pressure profile: high pressure inside inner_radius, transitions to low pressure by outer_radius
+        self.P = np.where(
+            R <= inner_radius,
+            high_pressure,
+            np.where(
+                R <= outer_radius,
+                high_pressure
+                - (high_pressure - low_pressure)
+                * (R - inner_radius)
+                / (outer_radius - inner_radius),
+                low_pressure,
+            ),
+        )
+
+        self.gamma = gamma
+
+
 def postprocess_data(data_path):
 
     with h5py.File(data_path, "a") as file:
