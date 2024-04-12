@@ -22,7 +22,7 @@ N = 250  # Dimensions of the domain
 lim = 0.5  # Domain limits
 
 # Get the initial conditions for the wave
-AD = 1e-1  # Amplitude of density perturbation
+AD = 1e-2  # Amplitude of density perturbation
 k_x, k_y = 1 * 2 * np.pi, 0 * 2 * np.pi  # wave propagating on x direction
 D0, P0 = 1, 1  # Background density and pressure
 
@@ -76,7 +76,9 @@ save_path = output_folder + "conserved_quantites.jpg"
 pu.plot_conserved_quantities(Fluid.output_data_path, save_path)
 
 # Make a video of the snapshots
-pu.animate_field(Fluid.output_data_path, output_folder, field_name="Pressure", fps=20)
+pu.animate_field(
+    Fluid.output_data_path, output_folder, field_name="Velocity Magnitude", fps=20
+)
 
 """
 Possible field names for the plotting above (directly read from the HDF5 file):

@@ -1,6 +1,6 @@
-# 2D Implementation of the Lax-Friederich Scheme
+# 2D Implementation of the Lax-Friedrichs Scheme
 
-Python program for 2D implementation of Lax-Friederichs scheme for simulation of inviscid flow of a perfect gas. 
+Python program for 2D implementation of Lax-Friedrichs scheme for simulation of inviscid flow of a perfect gas. 
 
 ## Structure
 
@@ -17,7 +17,7 @@ Python program for 2D implementation of Lax-Friederichs scheme for simulation of
 
 ## Usage
 
-The core functionality relies in the `Fluid2D()` class inside `main/main.py`, which implements the Lax-Friederichs scheme in 2D for the fluid flow equations.  The simulation output is saved in a `.hdf5` file format. There is also the possibility to add lagrangian tracers to the simulation. Check `example/gresho_vortex_example.py` for example usage.  
+The core functionality relies in the `Fluid2D()` class inside `main/main.py`, which implements the Lax-Friedrichs scheme in 2D for the fluid flow equations.  The simulation output is saved in a `.hdf5` file format. There is also the possibility to add lagrangian tracers to the simulation. Check `example/gresho_vortex_example.py` for example usage.  
 
 ## Dependencies
 - [numpy](https://github.com/numpy/numpy): For math operations.

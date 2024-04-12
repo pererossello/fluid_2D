@@ -101,10 +101,11 @@ def animate_field(
 
         for k in range(M):
             step_group = file[f"{k:03d}"]
-            field = (
-                step_group["Velocity X"][()] ** 2 + step_group["Velocity Y"][()] ** 2
-            )
-            field = np.sqrt(field)
+            # field = (
+            #     step_group["Velocity X"][()] ** 2 + step_group["Velocity Y"][()] ** 2
+            # )
+            # field = np.sqrt(field)
+            field = step_group[field_name][()]
             if k == 0:
                 max_field = np.max(field)
                 min_field = np.min(field)
